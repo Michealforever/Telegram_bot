@@ -7,7 +7,7 @@ from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, Con
 with open("config.json") as f:
     config = json.load(f)
 
-BOT_TOKEN = "YOUR_BOT_TOKEN_HERE"
+BOT_TOKEN = "7701491191:AAHPGbItoh5S4zsulCCOVzkq0CRdRQxnwxU"
 CHANNEL_USERNAME = config["channel_username"]
 ADMINS = config["admins"]
 
