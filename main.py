@@ -44,6 +44,6 @@ if __name__ == '__main__':
     app.run_webhook(
         listen="0.0.0.0",
         port=int(os.environ.get('PORT', 8080)),
-        webhook_url=WEBHOOK_URL
+        webhook_url=os.environ.get("WEBHOOK_URL")
     )
     
