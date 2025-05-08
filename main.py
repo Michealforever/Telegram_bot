@@ -44,6 +44,6 @@ if __name__ == '__main__':
     app.run_webhook(
         listen="0.0.0.0",
         port=int(os.environ.get('PORT', 8080)),
-        webhook_url=f"https://<https://telegram-bot-2-404g.onrender.com>.onrender.com"
+        webhook_url=f"https://<https://kingdom-bot-mc0w.onrender.com>.onrender.com"
     )
   
