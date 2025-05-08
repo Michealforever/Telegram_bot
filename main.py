@@ -1,25 +1,23 @@
 import json
 import logging
-import os
 from telegram import Update
-from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes
+from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, ContextTypes, filters
 
 # Load config
 with open("config.json") as f:
     config = json.load(f)
 
-BOT_TOKEN = "7701491191:AAHPGbItoh5S4zsulCCOVzkq0CRdRQxnwxU"
+BOT_TOKEN = "YOUR_BOT_TOKEN_HERE"
 CHANNEL_USERNAME = config["channel_username"]
-ADMINS = config["admins"]  # Should be user IDs (as strings)
+ADMINS = config["admins"]
 
 logging.basicConfig(level=logging.INFO)
 
-# Watermark as caption
 async def handle_file(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user_id = str(update.message.from_user.id)
-    if user_id not in ADMINS:
+    user = update.message.from_user.username
+    if f"@{user}" not in ADMINS:
         return
-    
+
     file = update.message.document or update.message.video or update.message.audio or update.message.photo[-1]
     caption = (update.message.caption or "") + f"\n\n📌 From: {CHANNEL_USERNAME}"
 
@@ -28,22 +26,12 @@ async def handle_file(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         await update.message.reply_text("Unsupported file type.")
 
-# Start command
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Bot is ready. Send files to forward with watermark!")
 
 if __name__ == '__main__':
     app = ApplicationBuilder().token(BOT_TOKEN).build()
-
     app.add_handler(CommandHandler("start", start))
     app.add_handler(MessageHandler(filters.ALL, handle_file))
-
-    # Replace with your actual Render Web Service URL
-    WEBHOOK_URL = "https://kingdom-bot-mc0w.onrender.com"
-
-    app.run_webhook(
-        listen="0.0.0.0",
-        port=int(os.environ.get('PORT', 8080)),
-        webhook_url=os.environ.get("WEBHOOK_URL")
-    )
+    app.run_polling()
     
